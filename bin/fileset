@@ -33,18 +33,21 @@ lines = {};
 out = {}
 for line in open(files[0]):
     line = line.strip()
-    lines[line] =line
+    key = line.split(',')[field-1]  if field else line;
+    lines[key] =line
 
 if act == '+':
     out = lines;
     for line in open(files[1]):
         line = line.strip()
-        out[line] = line;
+        key = line.split(',')[field-1]  if field else line;
+        out[key] = line;
 elif act == '-':
     out = lines;
     for line in [ line.strip() for line in open(files[1])]:
-        if line in lines:
-            out.pop(line)
+        key = line.split(',')[field-1]  if field else line;
+        if key in lines:
+            out.pop(key)
 elif act == '-+':
     out = {}
     for line in [ line.strip() for line in open(files[1])]:
