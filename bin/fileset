@@ -6,13 +6,31 @@ act = '+'
 def Usage():
     tip = '''
     Usage:
-        fileset file + file
-        fileset file - file
-        fileset file -+ file
+        fileset [OPTIONS] FILE1 {SET_OPERATOR} FILE2
+
+        SET_OPERATOR
+            +   Union set
+            -   Difference set
+            -+  Intersection set
+        OPTION
+            -h  For help
+            -d <delimiter>
+                Set delimiter( `,` is default delimiter)
+            -f n
+                Compare the n'th field
+
+    Example:
+        fileset a + b
+            Union set of a and b.
+        fileset a -  b
+            Difference set: a minus b
+        fileset a -+ b
+            Intersection set of a and b.
     '''
-    quit('Usage: fileset file + file');
+    quit(tip);
 
 field = 0;
+delimiter = ',';
 argv.pop(0);
 while len(argv):
     arg = argv.pop(0);
@@ -21,6 +39,8 @@ while len(argv):
     elif arg == '-f':
         arg = argv.pop(0)
         field = int(arg)
+    elif arg == '-d':
+        delimiter = argv.pop(0)
     elif re.match(r'^[\w\.\/]+$', arg):
         files.append(arg)
     else:
@@ -33,25 +53,25 @@ lines = {};
 out = {}
 for line in open(files[0]):
     line = line.strip()
-    key = line.split(',')[field-1]  if field else line;
+    key = line.split(delimiter)[field-1]  if field else line;
     lines[key] =line
 
 if act == '+':
     out = lines;
     for line in open(files[1]):
         line = line.strip()
-        key = line.split(',')[field-1]  if field else line;
+        key = line.split(delimiter)[field-1]  if field else line;
         out[key] = line;
 elif act == '-':
     out = lines;
     for line in [ line.strip() for line in open(files[1])]:
-        key = line.split(',')[field-1]  if field else line;
+        key = line.split(delimiter)[field-1]  if field else line;
         if key in lines:
             out.pop(key)
 elif act == '-+':
     out = {}
     for line in [ line.strip() for line in open(files[1])]:
-        key = line.split(',')[field-1]  if field else line;
+        key = line.split(delimiter)[field-1]  if field else line;
         if key in lines:
             out[key] = line
 
