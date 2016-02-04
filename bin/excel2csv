@@ -1,11 +1,17 @@
 #!/usr/local/bin/python3
 import openpyxl
 import csv
+from sys import argv
 
 wb = openpyxl.load_workbook(argv[1])
 sh = wb.active
+max = 0;
+for row in sh.rows[0:2]:
+    for idx, v in enumerate(row):
+        if v.value != None:
+            max = idx
 to = 'test.csv' if len(argv) < 3 else argv[2]
 with open(to, 'w') as f:
     c = csv.writer(f)
     for r in sh.rows:
-        c.writerow([cell.value for cell in r])
+        c.writerow([cell.value.replace("\n", ' ') if type(cell.value) is str else cell.value for cell in r[0:max]])
