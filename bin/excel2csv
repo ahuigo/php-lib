@@ -1,0 +1,11 @@
+#!/usr/local/bin/python3
+import openpyxl
+import csv
+
+wb = openpyxl.load_workbook(argv[1])
+sh = wb.active
+to = 'test.csv' if len(argv) < 3 else argv[2]
+with open(to, 'w') as f:
+    c = csv.writer(f)
+    for r in sh.rows:
+        c.writerow([cell.value for cell in r])
