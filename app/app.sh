@@ -12,3 +12,6 @@ wget $nohttps https://raw.githubusercontent.com/hilojack/php-lib/master/app/xdeb
 
 # memcached
 zsh <(wget https://raw.githubusercontent.com/hilojack/php-lib/master/app/memcached.sh -O -) -no-check
+# redis
+sh <(wget https://raw.githubusercontent.com/hilojack/php-lib/master/app/redis.sh -O -) -no-check
+sh <(wget https://raw.githubusercontent.com/hilojack/php-lib/master/app/phpredis.sh -O -) -no-check

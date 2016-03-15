@@ -38,8 +38,8 @@ function gcap(){
 
 # grep
 mcd(){ mkdir -p $@; cd $1}
-alias rgrep='grep -r -F'
-rgrep.(){ grep -r -F $@ .}
+alias rgrep='grep -rn -F'
+rgrep.(){ grep -rn -F $@ .}
 
 # gbk
 function iconvgbk(){
