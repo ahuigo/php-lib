@@ -1,4 +1,10 @@
 #!/bin/bash
+<<Usage
+ 	mkdir -p ~/.git_template/hooks
+ 	git config --global init.templatedir '~/.git_template'
+	wget https://raw.githubusercontent.com/hilojack/php-lib/master/git/pre-commit  -O ~/.git_template/hooks/pre-commit
+Usage
+
 function push_error(){
 	ERRORS="$ERRORS\n$1"
 }
