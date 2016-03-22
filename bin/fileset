@@ -1,4 +1,7 @@
 #!/usr/local/bin/python3
+#########################################
+# Author: hilojack  <a132811@gmail.com>
+#########################################
 from sys import argv
 import re
 files = []
