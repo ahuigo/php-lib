@@ -9,7 +9,7 @@ newrev="$3"
 
 # <oldrev> <newrev> <refname>
 if [[ -z "$newrev" ]];then
-	read oldrev newrev refname; #clen-git style
+	read oldrev newrev refname; #client-git style
 fi
 echo "oldrev:$oldrev | newrev:$newrev | refname:$refname\n========"
 
