@@ -20,7 +20,7 @@ def Usage():
             -d <delimiter>
                 Set delimiter( `,` is default delimiter)
             -f n
-                Compare the n'th field
+                Compare the n'th field(The default is whole line)
 
     Example:
         fileset a + b
@@ -48,7 +48,6 @@ while len(argv):
         files.append(arg)
     else:
         Usage()
-
 if (len(files)<2):
     Usage()
 
