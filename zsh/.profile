@@ -53,6 +53,8 @@ function uniqfile(){
 		sort $1 | uniq > ~/tmp.txt && mv ~/tmp.txt $1 && echo 'succ'
 	fi
 }
+
+# loop shell command
 function loop(){
 	while true;do
 		#printf "\r%s" "`$*`";
