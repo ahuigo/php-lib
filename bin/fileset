@@ -14,7 +14,7 @@ def Usage():
         SET_OPERATOR
             +   Union set
             -   Difference set
-            -+  Intersection set
+            -i  Intersection set
         OPTION
             -h  For help
             -d <delimiter>
@@ -27,7 +27,7 @@ def Usage():
             Union set of a and b.
         fileset a -  b
             Difference set: a minus b
-        fileset a -+ b
+        fileset a -i b
             Intersection set of a and b.
     '''
     quit(tip);
@@ -37,7 +37,7 @@ delimiter = ',';
 argv.pop(0);
 while len(argv):
     arg = argv.pop(0);
-    if arg in ['-', '+', '-+']:
+    if arg in ['-', '+', '-i']:
         act = arg;
     elif arg == '-f':
         arg = argv.pop(0)
@@ -71,7 +71,7 @@ elif act == '-':
         key = line.split(delimiter)[field-1]  if field else line;
         if key in lines:
             out.pop(key)
-elif act == '-+':
+elif act == '-i':
     out = {}
     for line in [ line.strip() for line in open(files[1])]:
         key = line.split(delimiter)[field-1]  if field else line;
