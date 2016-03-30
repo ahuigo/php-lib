@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-import os,shutil,glob
+import os,glob
 from sys import argv;
 script, filename = argv
-filepathPre = os.environ.get('HOME')+'/www/jek/img/'+filename+'-'
-img = '![%s](/p/%s)'
+filePathPre = os.environ.get('HOME')+'/www/jek/img/';
+imgNameFormat = filename + '-%d.png';
+imgMD = '![%s](/img/%s)'
 for oldFile in glob.iglob(os.environ.get('HOME')+'/Desktop/Screen*.png'):
     for i in range(1,29):
-        newfilePath = filepathPre +str(i)+'.png'
-        if not os.path.isfile(newfilePath):
-            filename = filename + '-' + str(i) + '.png';
-            img = img % (filename, filename)
-            os.rename(oldFile,newfilePath)
-            print(img);
+        imgName = imgNameFormat % i
+        newFilePath = filePathPre + imgName;
+        if not os.path.isfile(newFilePath):
+            imgMD = imgMD % (imgName, imgName)
+            os.rename(oldFile,newFilePath)
+            print(imgMD);
             break;
