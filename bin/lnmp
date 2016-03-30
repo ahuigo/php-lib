@@ -1,0 +1,19 @@
+#!/bin/sh
+echo "stop nginx & php-fpm";
+sudo pkill php-fpm memcached
+pgrep nginx > /dev/null && sudo nginx -s stop
+
+if [[ $1 = 'stop' ]];then
+	exit;
+fi
+
+echo "start php-fpm daemon"
+sudo php-fpm -D
+
+echo "start nginx"
+[[ -d /usr/local/var/run/nginx/ ]] || mkdir /usr/local/var/run/nginx/
+sudo nginx  
+
+# mc
+echo "start memcache"
+pgrep memcached > /dev/null || memcached -s /tmp/mc.sock -d

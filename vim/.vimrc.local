@@ -102,3 +102,18 @@ noremap <F9> :execute "0r _posts/test.md"<CR>
 noremap <Leader>1 :diffget 1<CR>
 noremap <Leader>2 :diffget 2<CR>
 noremap <Leader>3 :diffget 3<CR>
+
+"file
+function! Move(src, dst)
+	exe '!mv' a:src a:dst
+endfunction
+"call Move(1,2)
+com! -complete=file -nargs=* Move call Move(<f-args>)
+
+"clipboard
+"inoremap <D-V> <ESC>:exec 'r!pasteImg.py' expand('%:t:r')<CR>
+inoremap <D-V> <ESC>:r!pasteImg.py '%:t:r'<CR>
+inoremap <C-v> <ESC>:r!pasteImg.py '%:t:r'<CR>
+"function MovePng()
+	"let a:
+
