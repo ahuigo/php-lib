@@ -143,7 +143,8 @@ class curl {
      * @return static
      */
     function disableJson(){
-       $this->json = false;
+    	$this->json = false;
+		return $this;
     }
     function resetParams(){
         foreach(array('json'=>true,) as $k =>$v){
