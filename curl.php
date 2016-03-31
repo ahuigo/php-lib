@@ -130,12 +130,13 @@ class curl {
 
         curl_close($this->_ch);//否则以前init 的option 会被保留
         $this->_option = array();
-        $this->resetParams();
         if($this->json){
-            return json_decode($this->res, true);
+            $rtn = json_decode($this->res, true);
         }else{
-            return $this->res;
+            $rtn = $this->res;
         }
+        $this->resetParams();
+        return $rtn;
     }
 
     private $json;
