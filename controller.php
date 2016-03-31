@@ -50,8 +50,9 @@ class Base{
             $smarty->compile_dir = SMARTY_ROOT . 'templates_c';
             $smarty->config_dir = SMARTY_ROOT . 'config';
             $smarty->cache_dir = SMARTY_ROOT . 'cache';
-            $smarty->caching = false;
-            $smarty->assign("login_account", SignCheck::userName());
+            if(isset($_SERVER['DEBUG'])){
+                $smarty->caching = false;
+            }
         }
         return $smarty;
     }
