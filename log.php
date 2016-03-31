@@ -1,6 +1,7 @@
 <?php
+
 class Log {
-    static $logRootDir = '.';
+    static $logRootDir = '';
     static $logDir = '.';
 
     public static function setLogRootDir($rootDir){
@@ -12,6 +13,9 @@ class Log {
      * @return static
      */
     public static function setLogDir($dir){
+        if(empty(self::$logRootDir)){
+            self::$logRootDir = defined('LOG_PATH')?  LOG_PATH: './log';
+        }
         if($dir{0} === '/'){
             self::$logDir = $dir;
         }else{
@@ -51,20 +55,24 @@ class Log {
         }
 
         if(!isset($fhs[$file])){
-            self::mkdir(dirname($file));
+            if(!self::mkdir(dirname($file))){
+               return false;
+            }
             $fhs[$file] = fopen($file, 'a');
         }
         $fh = $fhs[$file];
         fwrite($fh, "$msg\n");
-
+        return true;
     }
 
     /**
      * @param $dir
      */
     static function mkdir($dir){
+        $rtn = true;
         if(!is_dir($dir)){
-            mkdir($dir, 0777, true);
+            $rtn = mkdir($dir, 0777, true);
         }
+        return $rtn;
     }
 }

@@ -5,7 +5,7 @@
  */
 class curl {
 
-	private $ch;
+	private $_ch;
 	private $_option;
 	private $_error;
 	private $_errno;
@@ -15,6 +15,7 @@ class curl {
 	static private $instance;
 
 	private function __construct() {
+        $this->resetParams();
 	}
 	public function __get($name){
 		return $this->$name;
@@ -100,37 +101,56 @@ class curl {
 	protected function _setUrl($url){
 		$this->_option[CURLOPT_URL] = $url;
 	}
+    var $res;
+    /**
+     * @param type $url
+     * @param type $method
+     * @param type $params
+     * @return static
+     */
+    function request($url, $method = 'get', $params = array(), $headers = array(), $opts = array()) {
+        $this->init();
+        $this->_setUrl($url);
+        $this->_setHeader($headers);
+        $this->_setOpts($opts);
+        $method = strtolower($method);
+        $this->_setMethod($method);
+        if ( in_array($method ,array( 'post' ,  'put'))) {
+            $this->_option[CURLOPT_POSTFIELDS] = $params;
+        } else {
+            $this->_setParamsGet($params);
+        }
+        curl_setopt_array($this->_ch, $this->_option);
 
-	/**
-	 * @param type $url
-	 * @param type $method
-	 * @param type $params
-	 * @return type
-	 */
-	function request($url, $method = 'get', $params = array(), $headers = array(), $opts = array()) {
-		$this->init();
-		$this->_setUrl($url);
-		$this->_setHeader($headers);
-		$this->_setOpts($opts);
-		$method = strtolower($method);
-		$this->_setMethod($method);
-		if ( in_array($method ,[ 'post' ,  'put'])) {
-			$this->_option[CURLOPT_POSTFIELDS] = $params;
-		} else {
-			$this->_setParamsGet($params);
-		}
-		curl_setopt_array($this->_ch, $this->_option);
+        $this->res = curl_exec($this->_ch);
+        $this->_error = curl_error($this->_ch);
+        $this->_errno = curl_errno($this->_ch);
+        $this->_codeInfo = curl_getinfo($this->_ch);
+        $this->debug && $this->setCurlExecInfo();
 
-		$rtn = curl_exec($this->_ch);
-		$this->_error = curl_error($this->_ch);
-		$this->_errno = curl_errno($this->_ch);
-		$this->_codeInfo = curl_getinfo($this->_ch);
-		$this->debug && $this->setCurlExecInfo();
+        curl_close($this->_ch);//否则以前init 的option 会被保留
+        $this->_option = array();
+        $this->resetParams();
+        if($this->json){
+            return json_decode($this->res, true);
+        }else{
+            return $this->res;
+        }
+    }
 
-		curl_close($this->_ch);//否则以前init 的option 会被保留
-		$this->_option = array();
-		return $rtn;
-	}
+    private $json;
+    /**
+     * @return static
+     */
+    function disableJson(){
+       $this->json = false;
+    }
+    function resetParams(){
+        foreach(array('json'=>true,) as $k =>$v){
+            $this->$k = $v;
+        }
+    }
+
 	/**
 	 *
 	 */
@@ -176,7 +196,7 @@ class curl {
 			'Content-Type: multipart/form-data; boundary='. $boundary,
 		);
 
-		$params = [];
+		$params = array();
 
 		//var-value
 		foreach($data as $k=>$v){
@@ -233,7 +253,7 @@ class curl {
 
 	/**
 	 *
-	 * @return curl instance
+	 * @return static
 	 */
 	static function instance() {
 		if(self::$instance === null){
