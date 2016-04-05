@@ -17,10 +17,10 @@ def Usage():
             -i  Intersection set
         OPTION
             -h  For help
-            -d <delimiter>
-                Set delimiter( `,` is default delimiter)
             -f n
                 Compare the n'th field(The default is whole line)
+            -d <delimiter>
+                Set delimiter( `,` is default delimiter) with `-f`
 
     Example:
         fileset a + b

@@ -11,8 +11,9 @@ echo "start php-fpm daemon"
 sudo php-fpm -D
 
 echo "start nginx"
-[[ -d /usr/local/var/run/nginx/ ]] || mkdir /usr/local/var/run/nginx/
-sudo nginx  
+[[ -d /usr/local/var/run/nginx/ ]] || sudo mkdir /usr/local/var/run/nginx/
+[[ -d /tmp/nginx ]] || mkdir /tmp/nginx
+sudo nginx 
 
 # mc
 echo "start memcache"
