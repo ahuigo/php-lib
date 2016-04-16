@@ -141,3 +141,6 @@ function! Pipe2Shell(args)
   endif
 endfunction
 command! -nargs=+ -complete=command Pipe2Shell call Pipe2Shell(<q-args>)
+
+" exvim
+nnoremap <unique> <silent> <F3> :EXProjectToggle<cr>

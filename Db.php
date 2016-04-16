@@ -62,6 +62,40 @@ class Db{
         $rtn = $this->run($sql, $bind, 'insert');
         return $rtn;
     }
+
+    public function update($table, $info, $where) {
+        if (!is_string($table)) {
+            throw new \InvalidArgumentException(self::INVALIDATE_ARGUMENTS . ':table');
+        }
+
+        if (!is_string($where)) {
+            throw new \InvalidArgumentException(self::INVALIDATE_ARGUMENTS . ':where');
+        }
+
+        if (!is_array($info)) {
+            throw new \InvalidArgumentException(self::INVALIDATE_ARGUMENTS . ':info');
+        }
+
+        $fields = array_keys($info);
+        $fieldSize = sizeof($fields);
+
+        $sql = "UPDATE " . $table . " SET ";
+        for ($f = 0; $f < $fieldSize; ++$f) {
+            if ($f > 0) {
+                $sql .= ", ";
+            }
+            $sql .= $fields[$f] . " = :update_" . $fields[$f];
+        }
+        $sql .= " WHERE " . $where . ';';
+
+		$bind = array();
+        foreach ($fields as $field) {
+            $bind[":update_$field"] = $info[$field];
+        }
+
+        return $this->run($sql, $bind, 'update');
+    }
+
     public function queryVar($sql, $bind = array()){
         $rtn = $this->queryRow($sql, $bind);
         if(is_array($rtn) && !empty($rtn)){
@@ -107,8 +141,7 @@ class Db{
             return $return;
         } catch (\PDOException $e) {
             if(isset($_SERVER['DEBUG'])){
-                var_dump(['log'=>$log, 'sql'=>$sql, 'file'=> __FILE__, 'msg'=>$e->getMessage()]);
-                die;
+				throw new \PDOException("$sql :".$e->getMessage(), $e->getCode());
             }
                 var_dump(['log'=>$log, 'sql'=>$sql, 'file'=> __FILE__, 'msg'=>$e->getMessage()]);
             if ($pdoStmt) {
