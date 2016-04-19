@@ -35,8 +35,8 @@ cat <<-MM | sudo tee -a $phpini
 	xdebug.profiler_enable_trigger=1
 	;通过GET/POST/COOKIE:传XDEBUG_TRACE触发
 	xdebug.trace_enable_trigger=1
-	;xdebug.profiler_output_dir="/tmp"
-	;full variable contents and variable name
+	xdebug.profiler_output_dir="/tmp"
+	xdebug.trace_output_dir="/tmp"
 	xdebug.trace_output_name="trace"
 	xdebug.profiler_output_name="callgrind.out"
 	xdebug.collect_params=4
