@@ -11,7 +11,7 @@ set wrap
 set fileencoding=utf-8
 set fileencodings=utf-8,gbk
 set ts=4 sw=4
-set noexpandtab
+"set noexpandtab
 
 "info
 set laststatus=2
