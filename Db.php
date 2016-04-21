@@ -27,14 +27,25 @@ class Db{
     /**
      *
      * @param $table string
+     * @param $duplicate bool
      * @param $info array
      */
-    public function insert($table, $info) {
+    public function insert($table, $info, $duplicate = false) {
+        if(empty($info)){
+            throw new \InvalidArgumentException('Empty data!', -1);
+        }
         $fields = array_keys($info);
         $sql = "INSERT INTO " . $table . " (" . implode($fields, ", ") . ") VALUES (:" . implode($fields, ", :") . ");";
         $bind = array();
         foreach ($fields as $field) {
             $bind[":$field"] = $info[$field];
+        }
+        if($duplicate){
+            $sql .= " ON DUPLICATE KEY UPDATE ";
+            foreach($info as $k=>$v){
+                $sql .= "{$k} = VALUES($k),";
+            }
+            $sql = rtrim($sql, ',');
         }
         return $this->run($sql, $bind, 'insert');
     }
@@ -74,6 +85,10 @@ class Db{
 
         if (!is_array($info)) {
             throw new \InvalidArgumentException(self::INVALIDATE_ARGUMENTS . ':info');
+        }
+
+        if (!is_array($bind)) {
+            throw new \InvalidArgumentException(self::INVALIDATE_ARGUMENTS . ':bind');
         }
 
         $fields = array_keys($info);
@@ -143,7 +158,6 @@ class Db{
             if(isset($_SERVER['DEBUG'])){
 				throw new \PDOException("$sql :".$e->getMessage(), $e->getCode());
             }
-                var_dump(['log'=>$log, 'sql'=>$sql, 'file'=> __FILE__, 'msg'=>$e->getMessage()]);
             if ($pdoStmt) {
                 $log['errInfo'] = $pdoStmt->errorInfo();
             } else {
