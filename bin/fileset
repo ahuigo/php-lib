@@ -68,7 +68,7 @@ elif act == '-':
     out = lines;
     for line in [ line.strip() for line in open(files[1])]:
         key = line.split(delimiter)[field-1]  if field else line;
-        if key in lines:
+        if key in out:
             out.pop(key)
 elif act == '-i':
     out = {}
