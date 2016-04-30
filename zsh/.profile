@@ -30,6 +30,7 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 
 
 # git
+alias gitup='git submodule init && git submodule update'
 alias ga.='git add .'
 function gcap(){
 	git commit -am $1;

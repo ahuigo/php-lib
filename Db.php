@@ -35,7 +35,7 @@ class Db{
             throw new \InvalidArgumentException('Empty data!', -1);
         }
         $fields = array_keys($info);
-        $sql = "INSERT INTO " . $table . " (" . implode($fields, ", ") . ") VALUES (:" . implode($fields, ", :") . ");";
+        $sql = "INSERT INTO " . $table . " (" . implode($fields, ", ") . ") VALUES (:" . implode($fields, ", :") . ")";
         $bind = array();
         foreach ($fields as $field) {
             $bind[":$field"] = $info[$field];
@@ -45,7 +45,7 @@ class Db{
             foreach($info as $k=>$v){
                 $sql .= "{$k} = VALUES($k),";
             }
-            $sql = rtrim($sql, ',');
+            $sql .= 'id=last_insert_id(id)';
         }
         return $this->run($sql, $bind, 'insert');
     }

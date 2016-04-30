@@ -3,9 +3,9 @@
 if(count($argv)<2){
 	echo <<<MM
 	Usage :
-		cutx -d <delimiter> -f <fields> <file>
-		echo 'a=1|b=1|c=1' | cutx -d \| -f 'a,b'
-		echo 'a=1,b=1,c=1' | cutx -d , -f 'b,c'
+		cutf -d <delimiter> -f <fields> <file>
+		echo 'a=1|b=1|c=1' | cutf -d \| -f 'a,b'
+		echo 'a=1,b=1,c=1' | cutf -d , -f 'b,c'
 MM;
 	die;
 }
