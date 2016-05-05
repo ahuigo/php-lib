@@ -139,6 +139,16 @@ class curl {
         return $rtn;
     }
 
+    /**
+     * setTimeOut
+     * @param int $secs
+     */
+    public function setTimeOut($secs = 30){
+       $this->_option = array(
+           CURLOPT_TIMEOUT => (int)$secs,
+       );
+    }
+
     private $json;
     /**
      * @return static
