@@ -147,6 +147,7 @@ class curl {
        $this->_option = array(
            CURLOPT_TIMEOUT => (int)$secs,
        );
+       return $this;
     }
 
     private $json;

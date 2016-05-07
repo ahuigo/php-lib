@@ -24,7 +24,7 @@ cd
 wget http://cn2.php.net/distributions/php-7.0.6.tar.gz -O - |  tar -xzvf -
 cd php-7.0.6
 
-./configure --prefix=/usr/local/php \
+./configure --prefix=/usr/local/php7 \
 --with-mysql-sock --with-mysqli \
 --enable-fpm  --enable-soap \
 --with-libxml-dir --with-openssl \
@@ -59,15 +59,15 @@ cd php-7.0.6
 && make && make install
 
 # php.ini
-echo 'export PATH=$PATH:/usr/local/php/bin/' >> ~/.zshrc
-cp php.ini-development /usr/local/php/lib/php.ini
-sudo ln -sf /usr/local/php/lib/php.ini /etc/
+echo 'export PATH=$PATH:/usr/local/php7/bin/' >> ~/.zshrc
+cp php.ini-development /usr/local/php7/lib/php.ini
+sudo ln -sf /usr/local/php7/lib/php.ini /etc/
 
 # php-fpm.conf
-cp /usr/local/php/etc/php-fpm.conf.default /usr/local/php/etc/php-fpm.conf
-sudo ln -sf  /usr/local/php/etc/php-fpm.conf /etc/
-cp /usr/local/php/etc/php-fpm.d/www.conf.default /usr/local/php/etc/php-fpm.d/www.conf
-sudo ln -sf /usr/local/php/etc/php-fpm.d /etc/
+cp /usr/local/php7/etc/php-fpm.conf.default /usr/local/php7/etc/php-fpm.conf
+sudo ln -sf  /usr/local/php7/etc/php-fpm.conf /etc/
+cp /usr/local/php7/etc/php-fpm.d/www.conf.default /usr/local/php7/etc/php-fpm.d/www.conf
+sudo ln -sf /usr/local/php7/etc/php-fpm.d /etc/
 
 # php-fpm
 sudo cp sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
@@ -80,8 +80,8 @@ cd
 git clone  https://github.com/php-memcached-dev/php-memcached.git
 cd php-memcached/
 git checkout php7
-/usr/local/php/bin/phpize
-./configure --with-php-config=/usr/local/php/bin/php-config
+/usr/local/php7/bin/phpize
+./configure --with-php-config=/usr/local/php7/bin/php-config
 make
 make install
 
