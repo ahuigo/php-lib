@@ -1,3 +1,4 @@
+cd ~/
 if hash git; then
 	git clone https://github.com/Qihoo360/phptrace
 else
@@ -9,6 +10,8 @@ cd phptrace/extension
 phpize
 ./configure && make && sudo make install
 
+phpini=`php --ini | gawk '/\/php.ini/{print $4}'`
+extension_dir=`php -i | gawk  '/^extension_dir/{print $3}'`
 cat <<-MM | sudo tee -a $phpini
 
 	[phptrace]

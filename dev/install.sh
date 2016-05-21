@@ -1,5 +1,6 @@
 # 1. src
-git clone git://github.com/php/php-src.git
+#git clone git://github.com/php/php-src.git
+git clone https://git.php.net/repository/php-src.git
 cd php-src && git checkout PHP-5.3 # 签出5.3分支
 
 # 2. 准备编译环境

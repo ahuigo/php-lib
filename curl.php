@@ -191,7 +191,7 @@ class curl {
 			}else{
 				$param = $params;
 			}
-			$param = substr($param, 0, 500);
+			$param = substr($param, 0, 2000);
 			$this->curlInfo['cmd'].=" -d '{$param}' ";
 		}
 		$this->curlInfo['cmd'] .= " '{$this->_codeInfo['url']}' ";

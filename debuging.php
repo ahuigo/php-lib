@@ -94,7 +94,7 @@ class Debug{
 				include_once $XHPROF_ROOT . "/xhprof_lib/utils/xhprof_runs.php";
 				$source = 'xhprof_debug';
 				$run_id = (new XHProfRuns_Default())->save_run($xhprof_data, $source);
-				$url = "http://{$_SERVER['SERVER_ADDR']}:8000/index.php?run={$run_id}&source=$source";
+				$url = "http://{$_SERVER['SERVER_ADDR']}:9876/index.php?run={$run_id}&source=$source";
 				return "<a href='$url'> $url</a>";
 			}
         }
