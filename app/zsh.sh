@@ -14,8 +14,10 @@ echo "autoload -U compinit && compinit -u" >> ~/.zshrc
 
 # prompt
 cat <<-'MM' | tee -a ~/.zshrc
-	export PS1='%n@%m%{$fg[cyan]%} %c%{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%}>%{$reset_color%}'
+	${ret_status} 105 %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)
 MM
 
 cd ~
 env zsh
+
+exit;
