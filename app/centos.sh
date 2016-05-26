@@ -126,6 +126,14 @@ main() {
 main
 
 MM
+# autojump
+cd ~;
+git clone git://github.com/joelthelion/autojump.git
+cd autojump;
+./install.py;
+echo "[[ -s $HOME/.autojump/etc/profile.d/autojump.sh ]] && source $HOME/.autojump/etc/profile.d/autojump.sh" >> ~/.zshrc
+echo "autoload -U compinit && compinit -u" >> ~/.zshrc
+
 cat <<-'MM' | tee -a ~/.zshrc
 	${ret_status} 105 %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)
 MM
