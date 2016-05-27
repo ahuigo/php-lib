@@ -64,4 +64,10 @@ function loop(){
 	done
 }
 
+# mda
+function mda (){
+        mkdir -p $1
+        sudo chmod a+rwx $1
+}
+
 [ -f ~/.profile.private ] && source ~/.profile.private

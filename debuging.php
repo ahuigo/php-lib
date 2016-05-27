@@ -59,7 +59,7 @@ class Debug{
 
 	static $start_time = null;
 	static function start(){
-		self::$start_time = microtime(true);	
+		self::$start_time = microtime(true);
 		if(function_exists('xhprof_enable')){
 			xhprof_enable(XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY);
 		}
@@ -96,8 +96,12 @@ class Debug{
 				$run_id = (new XHProfRuns_Default())->save_run($xhprof_data, $source);
 				$url = "http://{$_SERVER['SERVER_ADDR']}:9876/index.php?run={$run_id}&source=$source";
 				return "<a href='$url'> $url</a>";
-			}
-        }
+			}else{
+        return "no $XHPROF_ROOT";
+      }
+    }else{
+      return "no xhprof_disable";
+    }
     }
 
     static private function toTable($arr) {
@@ -163,4 +167,3 @@ class Debug{
     </style>
 MM;
 }
-
