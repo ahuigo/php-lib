@@ -36,3 +36,6 @@ Then specify jpeg lib dir
 	--with-gd --with-jpeg-dir=/usr/lib64
 
 > You need to do `make clean` before recompile gd
+
+# pdo
+## sudo yum install php-pdo php-mysql -y
