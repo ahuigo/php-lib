@@ -75,13 +75,13 @@ class Debug{
 	}
 
     static private function getExtraMsg() {
-        $extraMsg = [
-            ['key', 'value'],
-            ["memory_get_peak_usage: ", memory_get_peak_usage()/1000000 . " Mb",],
-            ["exec_time", microtime(true) - self::$start_time." s"],
-            ["REQUEST_URI", $_SERVER['REQUEST_URI'],],
-            ["xhprof", self::getXhprof()],
-        ];
+      $extraMsg = array(
+            array('key', 'value'),
+            array("memory_get_peak_usage: ", memory_get_peak_usage()/1000000 . " Mb"),
+            array("exec_time", microtime(true) - self::$start_time." s"),
+            array("REQUEST_URI", $_SERVER['REQUEST_URI']),
+            array("xhprof", self::getXhprof()),
+        );
         return self::toTable($extraMsg);
     }
 
@@ -93,7 +93,8 @@ class Debug{
 				include_once $XHPROF_ROOT . "/xhprof_lib/utils/xhprof_lib.php";
 				include_once $XHPROF_ROOT . "/xhprof_lib/utils/xhprof_runs.php";
 				$source = 'xhprof_debug';
-				$run_id = (new XHProfRuns_Default())->save_run($xhprof_data, $source);
+        $xhprof_run =  (new XHProfRuns_Default());
+				$run_id = $xhprof_run->save_run($xhprof_data, $source);
 				$url = "http://{$_SERVER['SERVER_ADDR']}:9876/index.php?run={$run_id}&source=$source";
 				return "<a href='$url'> $url</a>";
 			}else{
