@@ -5,7 +5,7 @@ export EDITOR="vim"
 export CLICOLOR="xterm-color"
 export PATH=$PATH:$HOME/bin
 export GNUTERM=qt
-#export PROMPT='${ret_status}>%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%}%{$reset_color%}'
+export PROMPT='${ret_status}>%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%}%{$reset_color%}'
 
 # alias
 alias vi='mvim'
@@ -17,19 +17,22 @@ alias p3='python3'
 
 #android sdk
 #export PATH="/Users/hilojack/Downloads/android-sdk/platforms/":$PATH
-export PATH=$PATH:'/usr/local/sbin'
 export PATH=$PATH:~/.composer/vendor/bin
 export ANDROID_HOME=/usr/local/opt/android-sdk
+
+# go
+export GOPATH=~/go
+export PATH=$PATH:$GOPATH/bin
+
 
 #git
 #sh ~/.git.bash
 
-#complete
+# git complete
 #tree /usr/local/etc/bash_completion.d
 #adb-completion.bash git-completion.bash git-prompt.sh
 
-
-# git
+# git command
 alias gitup='git submodule init && git submodule update'
 alias ga.='git add .'
 function gcap(){
@@ -70,4 +73,4 @@ function mda (){
         sudo chmod a+rwx $1
 }
 
-[ -f ~/.profile.private ] && source ~/.profile.private
+[ -f ~/.private ] && source ~/.private

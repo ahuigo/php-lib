@@ -53,16 +53,6 @@ plugins=(git autojump)
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-export PATH=$PATH:$HOME/bin
-export GNUTERM=qt
-# export MANPATH="/usr/local/man:$MANPATH"
-export LC_ALL=en_US.UTF-8  
-export LANG=en_US.UTF-8
-export EDITOR='vim'
-## private
-[ -f ~/.profile_private ] && . ~/.profile_private
-
 # key bindings
 #bindkey "\e[1~" beginning-of-line
 #bindkey "\e[4~" end-of-line
@@ -71,33 +61,14 @@ stty start undef
 stty stop undef
 bindkey \^U backward-kill-line
 
-
-
 # Compilation flags
 export ARCHFLAGS="-arch x86_64"
 export LDFLAGS="-L/usr/local/opt/icu4c/lib"
 export CPPFLAGS="-I/usr/local/opt/icu4c/include"
 # export ARCHFLAGS="-Wno-error=unused-command-line-argument-hard-error-in-future"
 
-alias -s js=vi
-alias vi='mvim'
-alias cp='cp -i'
-alias svnst='svn st'
-
-# git
-alias ga.='git add .'
-
-# grep
-mcd(){mkdir -p $@; cd $1}
-alias rgrep='grep -R -F'
-rgrep.(){grep -R -F $@ .}
-
-# gbk
-function iconvgbk(){
-	if test $# -gt 0; then
-		test -f $1 && iconv -f gbk -t utf-8  $1 > ~/tmp.txt && mv ~/tmp.txt $1 && echo "Succ!";
-	fi
-}
+# private
+[ -f ~/.profile ] && source ~/.profile
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
