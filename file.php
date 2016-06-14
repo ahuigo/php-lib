@@ -55,7 +55,7 @@ class File {
         $fh = $fhs[$file];
         $fh->seek($start_line_pos);
 
-        $lines = [];
+        $lines = array();
         while(( $line = $fh->current()) && $num-- > 0){
             if(!empty($line)){
                 $lines[] = $line;
@@ -96,11 +96,12 @@ class File {
      * @return mixed
      */
     static function dataAsFile($str){
-        static $temps = [];
+        static $temps = array();
         $temp = tmpfile();
         $temps[] = $temp;
         fwrite($temp, $str, strlen($str));
-        $file = stream_get_meta_data($temp)['uri'];
+        $fileInfo = stream_get_meta_data($temp);
+        $file = $fileInfo['uri'];
         return $file;
     }
 
@@ -121,10 +122,10 @@ class File {
      * @param $file
      * @param $str
      */
-    static function appendFile($file, $str){
+    static function append($file, $str){
         static $files = array();
         if(!isset($files[$file])){
-            self::mkdir(dirname($file)); 
+            self::mkdir(dirname($file));
             $files[$file] = fopen($file, 'a');
         }
         $fp = $files[$file];
