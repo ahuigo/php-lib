@@ -117,6 +117,7 @@ class File {
         return $str;
     }
 
+
     /**
      * 追加文件内容
      * @param $file
@@ -129,8 +130,18 @@ class File {
             $files[$file] = fopen($file, 'a');
         }
         $fp = $files[$file];
-        fwrite($fp, $str);
+        return fwrite($fp, $str);
     }
 
+    /**
+     * @param $file
+     * @return bool
+     */
+    static function rm($file){
+        if(is_file($file)){
+           return unlink($file); 
+        }
+        return true;
+    }
 
 }
