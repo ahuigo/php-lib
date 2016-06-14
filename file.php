@@ -116,5 +116,20 @@ class File {
         return $str;
     }
 
+    /**
+     * 追加文件内容
+     * @param $file
+     * @param $str
+     */
+    static function appendFile($file, $str){
+        static $files = array();
+        if(!isset($files[$file])){
+            self::mkdir(dirname($file)); 
+            $files[$file] = fopen($file, 'a');
+        }
+        $fp = $files[$file];
+        fwrite($fp, $str);
+    }
+
 
 }

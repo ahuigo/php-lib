@@ -29,7 +29,7 @@ class Log {
      */
     public static function __callStatic($dir, $arguments) {
         self::setLogDir($dir);
-        call_user_func_array([__CLASS__,'writeLog' ], $arguments);
+        call_user_func_array(array(__CLASS__,'writeLog' ), $arguments);
     }
 
     /**
