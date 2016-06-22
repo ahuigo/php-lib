@@ -148,7 +148,8 @@ class Db{
                 if (preg_match("/^(" . implode("|", array("select", "describe", "pragma")) . ") /i", $sql)) {
                     $return = $pdoStmt->fetchAll(\PDO::FETCH_ASSOC);
                 } elseif (preg_match("/^(" . implode("|", array("delete", "insert", "update")) . ") /i", $sql)) {
-                    $return = $pdoStmt->rowCount();
+                    //$return = $pdoStmt->rowCount();
+                    $return = $result;
                 }
             } else {
                 //self::log('trace', 'execute failed', 0, $log);
