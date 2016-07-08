@@ -47,22 +47,30 @@ $topicConf->set('auto.offset.reset', 'largest');
 $topic = $rk->newTopic("Topic_Name", $topicConf);
 
 // Start consuming partition 0
-$topic->consumeStart(0, RD_KAFKA_OFFSET_STORED);
+$partition = 6;
+for($i=0; $i<=$partition; $i++){
+    $topic->consumeStart($i, RD_KAFKA_OFFSET_STORED);
+}
 
 while (true) {
-    $message = $topic->consume(0, 120*10000);
-    switch ($message->err) {
-        case RD_KAFKA_RESP_ERR_NO_ERROR:
-            var_dump($message);
-            break;
-        case RD_KAFKA_RESP_ERR__PARTITION_EOF:
-            echo "No more messages; will wait for more\n";
-            break;
-        case RD_KAFKA_RESP_ERR__TIMED_OUT:
-            echo "Timed out\n";
-            break;
-        default:
-            throw new \Exception($message->errstr(), $message->err);
-            break;
+    for($i=0; $i<=$partition; $i++){
+        $message = $topic->consume($i, 120*10000);
+        switch ($message->err) {
+            case RD_KAFKA_RESP_ERR_NO_ERROR:
+                echo "resutl:".$i;
+                var_dump($message->offset);
+                var_dump($message->payload);
+                echo "\n";
+                break;
+            case RD_KAFKA_RESP_ERR__PARTITION_EOF:
+                echo "No more messages; will wait for more\n";
+                break;
+            case RD_KAFKA_RESP_ERR__TIMED_OUT:
+                echo "Timed out\n";
+                break;
+            default:
+                throw new \Exception($message->errstr(), $message->err);
+                break;
+        }
     }
 }
