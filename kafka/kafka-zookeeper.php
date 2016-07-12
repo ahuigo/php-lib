@@ -21,10 +21,12 @@ $conf = new RdKafka\Conf();
 // Set the group id. This is required when storing offsets on the broker
 $conf->set('group.id', 'my-alarm-group');
 $conf->set('broker.version.fallback', '0.8.2.2');
+// socket请求的超时时间。实际的超时时间为max.fetch.wait + socket.timeout.ms。
+$conf->set('socket.timeout.ms', '400');
 
-$rk = new RdKafka\Consumer($conf);
-$rk->addBrokers($brokersAddr);
-$rk->setLogLevel(LOG_DEBUG);
+$consumer = new RdKafka\Consumer($conf);
+$consumer->addBrokers($brokersAddr);
+$consumer->setLogLevel(LOG_DEBUG);
 
 
 $topicConf = new RdKafka\TopicConf();
@@ -44,10 +46,12 @@ $topicConf->set('offset.store.path', sys_get_temp_dir());
 // 'smallest': start from the beginning
 $topicConf->set('auto.offset.reset', 'largest');
 
-$topic = $rk->newTopic("Topic_Name", $topicConf);
+$topic = $consumer->newTopic("Topic_Name", $topicConf);
 
 // Start consuming partition 0
-$partition = 6;
+$metaData = $consumer->getMetadata(false, $topic, 1000);
+$partitions = $metaData->getTopics()->current()->getPartitions();
+$partition = count($partitions);
 for($i=0; $i<=$partition; $i++){
     $topic->consumeStart($i, RD_KAFKA_OFFSET_STORED);
 }
