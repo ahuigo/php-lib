@@ -86,7 +86,12 @@ class curl {
 		return $this->_setOpts($opts);
 	}
 	protected function _setFile($file){
+		if(is_string($file)){
+		   $file = fopen($file, 'w+');
+		}
+		//curl_setopt($ch, , true);
 		$this->_option[CURLOPT_FILE] = $file;//设置输出文件的位置，值是一个资源类型(比如 fopen('a.dat', 'w'))，默认为STDOUT (浏览器)。
+		$this->_option[CURLOPT_FOLLOWLOCATION] = true;
 	}
 
 	protected function _setProxy($opts) {
