@@ -149,15 +149,24 @@ class File {
      * @param bool $recursive
      * @return RecursiveDirectoryIterator|RecursiveIteratorIterator|RegexIterator
      */
-    static function iteratorDir($dir, $pattern = '', $recursive = false){
+     static function iteratorDir($dir, $pattern = '', $recursive = false){
         $Iterator = new RecursiveDirectoryIterator($dir);
         if($recursive){
             $Iterator = new RecursiveIteratorIterator($Iterator);
         }
         if($pattern){
-            $Iterator = new RegexIterator($Iterator, $pattern, RegexIterator::GET_MATCH); // It matches against (string)$fileobj
+            $Iterator = new RegexIterator($Iterator, $pattern, RegexIterator::MATCH); // It matches against (string)$fileobj
         }
         return $Iterator;
+    }
+    static function loopDir($dir){
+        $files = array();
+        foreach(self::iteratorDir($dir) as $file=>$v){
+            if(!preg_match('#/\.{1,}$#', $file)){
+                $files[] = $file;
+            }
+        }
+        return $files;
     }
 
 }

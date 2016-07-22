@@ -1,61 +1,60 @@
 <?php
-/**
- * debuging('dtrace');          //查看调用栈
- * debuging($var);              //打印$var(var_dump)
- * debuging($var, 'php');       //打印$var(var_export)
- * debuging($var, $echo, 2); 	//以json格式输出$var
- */
-function debuging($var = '', $echo = '', $die = false, $force = false){
-    static $clear;
-    if(0 && $clear === null){
-        ob_end_flush();
-        $clear = true;
-    }
-
-    static $trace;
-    if($var === 'dtrace' || isset($_GET['dtrace']) && empty($trace)){
-        $trace = 1;
-        $echo = Debug::getTrace();
-    }
-
-    $force && $_GET['debug'] = 1;
-    if(isset($_GET['debug'])){
-		echo "================================= <br>\n";
-		debugingPos();
-        if($die === 2){
-            header('Content-type: application/json');
-            echo json_encode($var);
-        }else{
-            echo "<pre>\n";
-            if($echo){
-                echo "$echo:";
-            }
-            if($echo === 'php')
-                var_export($var);
-            else
-                var_dump($var);
-            echo "</pre>\n";
-        }
-        $die && die;
-    }
-}
-function debugingPos(){
-	//$tmp = debug_backtrace(2, 2)[1];
-	$tmp = debug_backtrace();
-	$pos = $tmp[1];
-    if(isset($pos['class'])){
-        echo "{$pos['class']}->{$pos['function']} <br>\n";
-    }else{
-        echo "{$pos['function']}(): {$pos['file']} . (line:{$pos['line']})<br>\n";
-    }
-}
+isset($_GET['DEBUG']) && Debug::start();
 
 /**
  * DEBUG
  */
-isset($_GET['DEBUG']) && Debug::start();
-
 class Debug{
+    /**
+     * debuging('dtrace');          //查看调用栈
+     * debuging($var);              //打印$var(var_dump)
+     * debuging($var, 'php');       //打印$var(var_export)
+     * debuging($var, $echo, 2); 	//以json格式输出$var
+     */
+    static function d($var = '', $echo = '', $die = false, $force = false){
+        static $clear;
+        if(0 && $clear === null){
+            ob_end_flush();
+            $clear = true;
+        }
+
+        static $trace;
+        if($var === 'dtrace' || isset($_GET['dtrace']) && empty($trace)){
+            $trace = 1;
+            $echo = Debug::getTrace();
+        }
+
+        $force && $_GET['debug'] = 1;
+        if(isset($_GET['debug'])){
+    		echo "================================= <br>\n";
+    		self::debugingPos();
+            if($die === 2){
+                header('Content-type: application/json');
+                echo json_encode($var);
+            }else{
+                echo "<pre>\n";
+                if($echo){
+                    echo "$echo:";
+                }
+                if($echo === 'php')
+                    var_export($var);
+                else
+                    var_dump($var);
+                echo "</pre>\n";
+            }
+            $die && die;
+        }
+    }
+    static function debugingPos(){
+    	//$tmp = debug_backtrace(2, 2)[1];
+    	$tmp = debug_backtrace();
+    	$pos = $tmp[1];
+        if(isset($pos['class'])){
+            echo "{$pos['class']}->{$pos['function']} <br>\n";
+        }else{
+            echo "{$pos['function']}(): {$pos['file']} . (line:{$pos['line']})<br>\n";
+        }
+    }
 
 	static $start_time = null;
 	static function start(){

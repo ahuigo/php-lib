@@ -7,16 +7,7 @@
 class Curl {
 
     private $_ch;
-    private $_option = array(
-        CURLOPT_TIMEOUT => 3600,
-        CURLOPT_CONNECTTIMEOUT => 50,
-        //CURLOPT_HEADER => false, //default false(output do not include header)
-        CURLOPT_RETURNTRANSFER => true, //1. default false: output to stdout. 2. true: return result(only when CURLOPT_FILE is empty)
-        //CURLOPT_NOBODY => 0, //default: false/0, if set true/1, the server will not response body(only when METHOD is GET)
-        CURLOPT_FOLLOWLOCATION => true, //default:0 重定向到哪儿我们就去哪儿
-        CURLOPT_USERAGENT => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.1025.168 Safari/535.19',
-        CURLOPT_REFERER => 'http://g.cn',
-    );
+    private $_option ;
     private $_error;
     private $_errno;
     private $_codeInfo;
@@ -26,6 +17,22 @@ class Curl {
 
     private function __construct() {
         $this->resetParams();
+    }
+
+    function resetParams() {
+        foreach (array('json' => true,) as $k => $v) {
+            $this->$k = $v;
+        }
+        $this->_option = array(
+            CURLOPT_TIMEOUT => 3600,
+            CURLOPT_CONNECTTIMEOUT => 50,
+            //CURLOPT_HEADER => false, //default false(output do not include header)
+            CURLOPT_RETURNTRANSFER => true, //1. default false: output to stdout. 2. true: return result(only when CURLOPT_FILE is empty)
+            //CURLOPT_NOBODY => 0, //default: false/0, if set true/1, the server will not response body(only when METHOD is GET)
+            CURLOPT_FOLLOWLOCATION => true, //default:0 重定向到哪儿我们就去哪儿
+            CURLOPT_USERAGENT => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.1025.168 Safari/535.19',
+            CURLOPT_REFERER => 'http://g.cn',
+        );
     }
 
     public function __get($name) {
@@ -91,6 +98,10 @@ class Curl {
 
     function setFile($file) {
         if (is_string($file)) {
+            $dir = dirname($file);
+            if(!is_dir($dir)){
+               mkdir($dir, 0777, true);
+            }
             $file = fopen($file, 'w+');
         }
         //curl_setopt($ch, , true);
@@ -171,11 +182,6 @@ class Curl {
         return $this;
     }
 
-    function resetParams() {
-        foreach (array('json' => true,) as $k => $v) {
-            $this->$k = $v;
-        }
-    }
 
     /**
      *
