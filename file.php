@@ -139,9 +139,25 @@ class File {
      */
     static function rm($file){
         if(is_file($file)){
-           return unlink($file); 
+           return unlink($file);
         }
         return true;
+    }
+    /**
+     * @param $dir
+     * @param string $pattern
+     * @param bool $recursive
+     * @return RecursiveDirectoryIterator|RecursiveIteratorIterator|RegexIterator
+     */
+    static function iteratorDir($dir, $pattern = '', $recursive = false){
+        $Iterator = new RecursiveDirectoryIterator($dir);
+        if($recursive){
+            $Iterator = new RecursiveIteratorIterator($Iterator);
+        }
+        if($pattern){
+            $Iterator = new RegexIterator($Iterator, $pattern, RegexIterator::GET_MATCH); // It matches against (string)$fileobj
+        }
+        return $Iterator;
     }
 
 }
