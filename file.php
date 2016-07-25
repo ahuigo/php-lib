@@ -53,6 +53,7 @@ class File {
             $fhs[$file] = new \SplFileObject($file);
         }
         $fh = $fhs[$file];
+        $start_line_pos < 0 && $start_line_pos = 0;
         $fh->seek($start_line_pos);
 
         $lines = array();
