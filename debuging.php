@@ -21,7 +21,7 @@ class Debug{
         static $trace;
         if($var === 'dtrace' || isset($_GET['dtrace']) && empty($trace)){
             $trace = 1;
-            $echo = Debug::getTrace();
+            $echo = self::getTrace();
         }
 
         $force && $_GET['debug'] = 1;

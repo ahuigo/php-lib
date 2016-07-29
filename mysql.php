@@ -24,6 +24,24 @@ class Db{
 		return new static($config);
 	}
 
+    function getCondition($condition){
+        $bind_keys = array_map(function($k){
+            return "`$k`=?";
+        },array_keys($condition));
+        $where = implode(' and ', $bind_keys);
+        return array(
+            $where,
+            array_values($condition),
+        );
+    }
+    function checkSqlInjection($condition){
+        foreach(array_keys($condition) as $key){
+           if(!preg_match('#^\w+$#', $key)){
+              die('sql injection!');
+           }
+        }
+    }
+
     /**
      *
      * @param $table string
@@ -31,8 +49,11 @@ class Db{
      * @param $info array
      */
     public function insert($table, $info, $duplicate = false) {
+        if(isset($this->shardIndexKey)){
+            $table = $this->getTable($info[$this->shardIndexKey]);
+        }
         if(empty($info)){
-            throw new \InvalidArgumentException('Empty data!', -1);
+            throw new \InvalidArgumentException('Empty insert data!', -1);
         }
         $fields = array_keys($info);
         $sql = "INSERT INTO " . $table . " (" . implode($fields, ", ") . ") VALUES (:" . implode($fields, ", :") . ")";
@@ -50,7 +71,7 @@ class Db{
         return $this->run($sql, $bind, 'insert');
     }
 
-    public function insertBatch($table, $infos, $duplicate = false) {
+    public function insertBatch($table, $infos, $duplicate = false, $id='id') {
         if (!is_array($infos[0])) {
             throw new \InvalidArgumentException('invalid infos');
         }
@@ -63,7 +84,7 @@ class Db{
         $sql .= $vals_format;
 
        if($duplicate){
-           $sql .= " ON DUPLICATE KEY UPDATE id=id";
+           $sql .= " ON DUPLICATE KEY UPDATE $id=$id";
        }
 
         $bind = array();
