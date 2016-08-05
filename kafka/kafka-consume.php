@@ -48,6 +48,8 @@ class KafkaDemo{
         $conf->set('group.id',$groupID);
         $conf->set('broker.version.fallback', '0.8.2.2');
         $conf->set('socket.timeout.ms', 10000);
+        //15M
+        $conf->set('fetch.message.max.bytes', '15000000');
 
         $rk = new RdKafka\Consumer($conf);
         $rk->addBrokers($brokersAddr);
