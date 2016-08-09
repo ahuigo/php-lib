@@ -2,9 +2,9 @@
 
 /**
  * @author hilojack
- * @desc Refer to : http://github.com/hilojack/php-curl
+ * @desc Refer to : http://github.com/hilojack/php-lib/lib/curl.php
  */
-class Curl {
+class Lib_Curl {
 
     private $_ch;
     private $_option ;
@@ -24,14 +24,14 @@ class Curl {
             $this->$k = $v;
         }
         $this->_option = array(
-            CURLOPT_TIMEOUT => 3600,
+            CURLOPT_TIMEOUT => 300,
             CURLOPT_CONNECTTIMEOUT => 50,
             //CURLOPT_HEADER => false, //default false(output do not include header)
             CURLOPT_RETURNTRANSFER => true, //1. default false: output to stdout. 2. true: return result(only when CURLOPT_FILE is empty)
             //CURLOPT_NOBODY => 0, //default: false/0, if set true/1, the server will not response body(only when METHOD is GET)
-            CURLOPT_FOLLOWLOCATION => true, //default:0 重定向到哪儿我们就去哪儿
-            CURLOPT_USERAGENT => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.1025.168 Safari/535.19',
-            CURLOPT_REFERER => 'http://g.cn',
+            CURLOPT_FOLLOWLOCATION => true, //default:0 不重定向
+            //CURLOPT_USERAGENT => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.1025.168 Safari/535.19',
+            //CURLOPT_REFERER => 'http://g.cn',
         );
     }
 
@@ -100,7 +100,7 @@ class Curl {
         if (is_string($file)) {
             $dir = dirname($file);
             if(!is_dir($dir)){
-               mkdir($dir, 0777, true);
+                mkdir($dir, 0777, true);
             }
             $file = fopen($file, 'w+');
         }
@@ -166,9 +166,7 @@ class Curl {
      * @param int $secs
      */
     public function setTimeOut($secs = 30) {
-        $this->_option = array(
-            CURLOPT_TIMEOUT => (int)$secs,
-        );
+        $this->_option[CURLOPT_TIMEOUT] = (int)$secs;
         return $this;
     }
 
@@ -184,13 +182,16 @@ class Curl {
 
 
     /**
-     *
+     * @param string $method
      */
     protected function _setMethod($method = 'get') {
         $this->_option[CURLOPT_CUSTOMREQUEST] = strtoupper($method);
         $this->_option[CURLOPT_POST] = $method === 'post';
     }
 
+    /**
+     *
+     */
     private function setCurlExecInfo() {
         $this->curlInfo['error'] = curl_error($this->_ch);
         $this->curlInfo['errno'] = curl_errno($this->_ch);
@@ -266,10 +267,16 @@ class Curl {
         return $this->curlInfo;
     }
 
+    /**
+     * @return mixed
+     */
     public function getCurlCmd() {
         return $this->curlInfo['cmd'];
     }
 
+    /**
+     * @param $data
+     */
     protected function _setParamsGet($data) {
         $_serverUrl = &$this->_option[CURLOPT_URL];
         $params = is_array($data) ? http_build_query($data) : $data;
@@ -277,12 +284,19 @@ class Curl {
         $_serverUrl .= $params;
     }
 
+    /**
+     * @param $file
+     * @return $this
+     */
     protected function _setCookieFile($file) {
         $this->_option[CURLOPT_COOKIEJAR] = $file;//save cookie file
         $this->_option[CURLOPT_COOKIEFILE] = $file;//send cookie file
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     protected function _https() {
         $this->_option[CURLOPT_SSL_VERIFYPEER] = false;
         return $this;
@@ -300,3 +314,4 @@ class Curl {
     }
 
 }
+
