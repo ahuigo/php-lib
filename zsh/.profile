@@ -7,6 +7,8 @@ export PATH=$PATH:$HOME/bin
 export GNUTERM=qt
 export PROMPT='${ret_status}>%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%}%{$reset_color%}'
 
+ulimit -n 1000
+
 # alias
 alias vi='mvim'
 alias cp='cp -i'
@@ -37,7 +39,13 @@ alias gitup='git submodule init && git submodule update'
 alias ga.='git add .'
 function gcap(){
 	git commit -am $1;
-	git push;
+    if git remote | grep '\w';then
+        echo git push;
+        git push;
+    else
+        echo git svn dcommit;
+        git svn dcommit
+    fi
 }
 
 # grep
