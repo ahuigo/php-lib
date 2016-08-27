@@ -42,4 +42,11 @@ class Response {
     static function isAjax(){
         return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_ACCEPT'] === 'application/json');
     }
+    /**
+     * @param $url
+     */
+    static function redirect($url){
+        header('Location: '. $url);
+        die;
+    }
 }
