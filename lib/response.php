@@ -16,7 +16,13 @@ class Response {
         }
         header('Content-Type: application/json');
         $rtn = (array)$rtn + array('errno'=>$errno, 'errmsg'=>$error);
-        $json = json_encode($rtn, JSON_UNESCAPED_UNICODE);
+        if(version_compare(PHP_VERSION, '5.4')){
+            $json = json_encode($rtn, JSON_UNESCAPED_UNICODE);
+        }else{
+            $json = preg_replace_callback('/\\\\u(\w{4})/', function ($matches) {
+                return html_entity_decode('&#x' . $matches[1] . ';', ENT_COMPAT, 'UTF-8');
+            }, json_encode($rtn));
+        }
         if($json === false){
             $json = json_encode($rtn, JSON_PARTIAL_OUTPUT_ON_ERROR);
         }
