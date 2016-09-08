@@ -3,6 +3,13 @@
 #  	Default encrypt algorithm: aes-256-cfb
 #  	Default port: 10086
 #
+# 两个版本: libev 省内存, 以及python 的:
+# wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-libev-debian.sh
+# chmod +x shadowsocks-libev-debian.sh
+# wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-libev.sh
+# chmod +x shadowsocks-libev.sh
+# ./shadowsocks-libev.sh 2>&1 | tee shadowsocks-libev.log
+
 
 function iptables_set(){
 	port=$1;

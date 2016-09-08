@@ -4,7 +4,7 @@
 /**
  * DEBUG
  */
-class Lib_Debug{
+class Debug{
     /**
      * debuging('dtrace');          //查看调用栈
      * debuging($var);              //打印$var(var_dump)
