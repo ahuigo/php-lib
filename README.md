@@ -42,7 +42,7 @@ If php >= 5.5.0
 	$cfile = curl_file_create('img/a.png','image/jpeg','pic');
 	//Object-Oriented
 	$cfile = new CURLFile('img/a.png','image/jpeg','pic');
-	$res  = curl::instance()->request($url, 'file', $params= array('var'=> 'value', 'pic'=>$cfile));
+	$res  = curl::instance()->request($url, 'post', $params= array('var'=> 'value', 'pic'=>$cfile));
 	var_dump($res);//Return true when success
 
 If php < 5.5.0
