@@ -175,8 +175,8 @@ class Lib_Curl {
     /**
      * @return static
      */
-    function disableJson() {
-        $this->json = false;
+    function disableJson($json = false) {
+        $this->json = $json;
         return $this;
     }
 
