@@ -27,7 +27,7 @@ class Debug{
         $force && $_GET['debug'] = 1;
         if(isset($_GET['debug'])){
             echo "================================= <br>\n";
-            self::debugingPos();
+            echo self::debugingPos();
             if($die === 2){
                 header('Content-type: application/json');
                 echo json_encode($var);
@@ -49,14 +49,16 @@ class Debug{
         //$tmp = debug_backtrace(2, 2)[1];
         $tmp = debug_backtrace();
         $pos = $tmp[1];
+        $echo = '';
         if(isset($pos['file'])){
-            echo "{$pos['file']} . (line:{$pos['line']})<br>\n";
+            $echo .= "{$pos['file']} . (line:{$pos['line']})<br>\n";
         }
         if(isset($pos['class'])){
-            echo "{$pos['class']}->{$pos['function']} <br>\n";
+            $echo .= "{$pos['class']}->{$pos['function']} <br>\n";
         }else{
-            echo "{$pos['function']}(): <br>\n";
+            $echo .= "{$pos['function']}(): <br>\n";
         }
+        return $echo;
     }
 
     static $start_time = null;
