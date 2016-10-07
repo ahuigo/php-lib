@@ -122,6 +122,25 @@ class Lib_Curl {
         $this->_option[CURLOPT_URL] = $url;
     }
 
+    static $hostIps = array();
+    static function setHostIp($host, $ip) {
+        self::$hostIps[$host] = $ip;
+    }
+    static function delHostIps() {
+        self::$hostIps[$host] = array();
+    }
+    protected function replaceHostIp(&$url, &$headers) {
+        $urlInfo = parse_url($url);
+        $myHost = $urlInfo['host'];
+        foreach(self::$hostIps as $host=>$ip){
+            if($host === $myHost){
+                $url = str_replace("$host", $ip, $url);
+                $headers[] = "Host: $host";
+                break;
+            }
+        }
+    }
+
     var $res;
 
     /**
@@ -132,6 +151,7 @@ class Lib_Curl {
      */
     function request($url, $method = 'get', $params = array(), $headers = array(), $opts = array()) {
         $this->init();
+        $this->replaceHostIp($url, $headers);
         $this->_setUrl($url);
         $this->setHeader($headers);
         $this->setOpts($opts);

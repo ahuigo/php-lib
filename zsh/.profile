@@ -44,7 +44,8 @@ function gcap(){
         git push;
     else
         echo git svn dcommit;
-        git svn dcommit
+        git svn rebase;
+        git svn dcommit;
     fi
 }
 

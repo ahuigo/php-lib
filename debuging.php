@@ -45,6 +45,12 @@ class Debug{
             $die && die;
         }
     }
+    static function log($arr){
+        if(isset($_GET['debug'])){
+            $log = self::debugingPos();
+            file_put_contents('/tmp/debug.txt', $log . var_export($arr, true), FILE_APPEND);
+        }
+    }
     static function debugingPos(){
         //$tmp = debug_backtrace(2, 2)[1];
         $tmp = debug_backtrace();
