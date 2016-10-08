@@ -108,14 +108,24 @@ class Lib_Curl {
         $this->_option[CURLOPT_FILE] = $file;//设置输出文件的位置，值是一个资源类型(比如 fopen('a.dat', 'w'))，默认为STDOUT (浏览器)。
         return $this;
     }
+    static private $opts = array();
 
-    function setProxy($opts) {
-        $opts or $opts = array(
+    function setProxy($proxy, $global = false) {
+        $opts = array(
             CURLOPT_HTTPPROXYTUNNEL => 1,
-            CURLOPT_PROXY => 'ahui.com:1080',
-            CURLOPT_PROXYUSERPWD => 'user:passwd',
+            CURLOPT_PROXY => $proxy,
         );
-        return $this->setOpts($opts);
+        //$opts or $opts = array(
+            //CURLOPT_HTTPPROXYTUNNEL => 1,
+            //CURLOPT_PROXY => 'ahui.com:1080',
+            //CURLOPT_PROXYUSERPWD => 'user:passwd',
+        //);
+        if($global){
+            self::$opts = $opts + self::$opts;
+            return $this;
+        }else{
+            return $this->setOpts($opts);
+        }
     }
 
     protected function _setUrl($url) {
@@ -127,7 +137,7 @@ class Lib_Curl {
         self::$hostIps[$host] = $ip;
     }
     static function delHostIps() {
-        self::$hostIps[$host] = array();
+        self::$hostIps = array();
     }
     protected function replaceHostIp(&$url, &$headers) {
         $urlInfo = parse_url($url);
@@ -154,6 +164,7 @@ class Lib_Curl {
         $this->replaceHostIp($url, $headers);
         $this->_setUrl($url);
         $this->setHeader($headers);
+        $opts += self::$opts;
         $this->setOpts($opts);
         $method = strtolower($method);
         $this->_setMethod($method);
