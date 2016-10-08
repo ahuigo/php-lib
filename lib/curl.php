@@ -110,6 +110,17 @@ class Lib_Curl {
     }
     static private $opts = array();
 
+    // curl --interface eth0
+    // 可以是一个接口名、IP 地址或者是一个主机名: only accepts IP addresses and hostnames of the local machine
+    function setInterface($inter, $global = false){
+        $opts = array();
+        if($global){
+            self::$opts = $opts + self::$opts;
+            return $this;
+        }else{
+            return $this->setOpts($opts);
+        }
+    }
     function setProxy($proxy, $global = false) {
         $opts = array(
             CURLOPT_HTTPPROXYTUNNEL => 1,
@@ -139,6 +150,7 @@ class Lib_Curl {
     static function delHostIps() {
         self::$hostIps = array();
     }
+
     protected function replaceHostIp(&$url, &$headers) {
         $urlInfo = parse_url($url);
         $myHost = $urlInfo['host'];
