@@ -54,7 +54,7 @@ unset GREP_OPTIONS
 alias grep='grep --color=auto --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
 mcd(){ mkdir -p $@; cd $1}
 alias rgrep='grep -rn -F'
-rgrep.(){ grep -rn -F $@ .}
+rgrep.(){ grep -rn $@ .}
 
 # gbk
 function iconvgbk(){

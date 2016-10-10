@@ -4,7 +4,7 @@
  * @author hilojack
  * @desc Refer to : http://github.com/hilojack/php-lib/lib/curl.php
  */
-class Lib_Curl {
+class Curl {
 
     private $_ch;
     private $_option ;
@@ -249,7 +249,8 @@ class Lib_Curl {
             $param = '';
             if (is_array($params)) {
                 array_walk($params, function ($v, $k) use (&$param) {
-                    $param .= "$k=" . urlencode($v) . '&';
+                    if(is_string($v))
+                     $param .= "$k=" . urlencode($v) . '&';
                 });
             } else {
                 $param = $params;
