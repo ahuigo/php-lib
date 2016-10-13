@@ -4,25 +4,24 @@
  */
 class Db{
 
-    public function __construct($config) {
-        $dsn = "mysql:host=".$config['host'].';port='.$config['port'].';dbname='.$config['dbname'];
-        $options = array(
-            \PDO::ATTR_PERSISTENT => false,
-            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-            \PDO::ATTR_EMULATE_PREPARES => true,
-            \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8" ,
-        );
+    public function __construct($dsn, $user, $password, $options = array()) {
+        //$dsn = "mysql:host=".$config['host'].';port='.$config['port'].';dbname='.$config['dbname'];
+        $options = $options + array(
+                \PDO::ATTR_PERSISTENT => false,
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                \PDO::ATTR_EMULATE_PREPARES => true,
+                \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8" ,
+            );
 
-		$this->pdo = new \PDO($dsn, $config['user'], $config['password'], $options);
-		//$this->pdo = new \PDO('mysql:host=127.0.0.1;dbname=test', 'root', '123456', $options);
-		$this->pdo->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+        $this->pdo = new \PDO($dsn, $user, $password, $options);
+        $this->pdo->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
     }
-	/**
-	 * @return static
-	 */
-	static function in($config){
-		return new static($config);
-	}
+    /**
+     * @return static
+     */
+    static function in($dsn, $user, $password, $options = array()){
+        return new static($dsn, $user, $password, $options);
+    }
 
     function getCondition($condition){
         $bind_keys = array_map(function($k){
@@ -36,9 +35,9 @@ class Db{
     }
     function checkSqlInjection($condition){
         foreach(array_keys($condition) as $key){
-           if(!preg_match('#^\w+$#', $key)){
-              die('sql injection!');
-           }
+            if(!preg_match('#^\w+$#', $key)){
+                die('sql injection!');
+            }
         }
     }
 
@@ -68,7 +67,7 @@ class Db{
             }
             $sql .= 'id=last_insert_id(id)';
         }
-        return $this->run($sql, $bind, 'insert');
+        return $this->query($sql, $bind, 'insert');
     }
 
     public function insertBatch($table, $infos, $duplicate = false, $id='id') {
@@ -83,15 +82,15 @@ class Db{
         $vals_format = str_repeat($val_format . ',', count($infos) -1). $val_format;
         $sql .= $vals_format;
 
-       if($duplicate){
-           $sql .= " ON DUPLICATE KEY UPDATE $id=$id";
-       }
+        if($duplicate){
+            $sql .= " ON DUPLICATE KEY UPDATE $id=$id";
+        }
 
         $bind = array();
         foreach ($infos as $info) {
             $bind = array_merge($bind, array_values($info));
         }
-        $rtn = $this->run($sql, $bind, 'insert');
+        $rtn = $this->query($sql, $bind, 'insert');
         return $rtn;
     }
 
@@ -124,12 +123,12 @@ class Db{
         }
         $sql .= " WHERE " . $where . ';';
 
-		$bind = array();
+        $bind = array();
         foreach ($fields as $field) {
             $bind[":update_$field"] = $info[$field];
         }
 
-        return $this->run($sql, $bind, 'update');
+        return $this->query($sql, $bind, 'update');
     }
 
     public function queryVar($sql, $bind = array()){
@@ -140,25 +139,25 @@ class Db{
         }
     }
     public function queryRow($sql, $bind = array()){
-        $rtn = $this->run($sql, $bind);
+        $rtn = $this->query($sql, $bind);
         if(is_array($rtn) && !empty($rtn)){
             return $rtn[0];
         }
     }
-	/**
-	 *
-	 */
-    public function run($sql, $bind = array()) {
+    /**
+     *
+     */
+    public function query($sql, $bind = array()) {
         $sql = trim($sql);
-		$arr = explode(' ', $sql);
-		$action = strtolower($arr[0]);
+        $arr = explode(' ', $sql);
+        $action = strtolower($arr[0]);
 
         $log = array(
             'sql' => $sql,
             'bind' => $bind,
         );
 
-		$return = false;
+        $return = false;
         try {
             $pdoStmt = $this->pdo->prepare($sql);
             $t1 = microtime(true);
@@ -178,7 +177,7 @@ class Db{
             return $return;
         } catch (\PDOException $e) {
             if(isset($_SERVER['DEBUG'])){
-				throw new \PDOException("$sql :".$e->getMessage(), $e->getCode());
+                throw new \PDOException("$sql :".$e->getMessage(), $e->getCode());
             }
             if ($pdoStmt) {
                 $log['errInfo'] = $pdoStmt->errorInfo();
@@ -188,7 +187,7 @@ class Db{
             throw new \PDOException("sql $action err, {$log['errInfo'][2]}", $log['errInfo'][1]);
         }
     }
-	/**
+    /**
      *  Returns the last inserted id.
      *  @return string
      */

@@ -181,7 +181,7 @@ class Curl {
         $method = strtolower($method);
         $this->_setMethod($method);
         if (in_array($method, array('post', 'put'))) {
-            $this->_option[CURLOPT_POSTFIELDS] = $params;
+            $this->_option[CURLOPT_POSTFIELDS] = version_compare(PHP_VERSION, '5.5') >-1? $params: http_build_query($params);
         } else {
             $this->_setParamsGet($params);
         }

@@ -16,7 +16,7 @@ class Response {
         }
         header('Content-Type: application/json');
         $rtn = (array)$rtn + array('errno'=>$errno, 'errmsg'=>$error);
-        if(version_compare(PHP_VERSION, '5.4')){
+        if(version_compare(PHP_VERSION, '5.4')>0){
             $json = json_encode($rtn, JSON_UNESCAPED_UNICODE);
         }else{
             $json = preg_replace_callback('/\\\\u(\w{4})/', function ($matches) {
