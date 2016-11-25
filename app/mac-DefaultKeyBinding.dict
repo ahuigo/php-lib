@@ -1,0 +1,44 @@
+{
+/* Override symbols so other apps can bind */
+"~j" = "noop:";
+"~i" = "noop:";
+
+/* Additional Emacs bindings */
+"~f" = "moveWordForward:";
+"~b" = "moveWordBackward:";
+"~<" = "moveToBeginningOfDocument:";
+"~>" = "moveToEndOfDocument:";
+"~v" = "pageUp:";
+"^v" = "pageDown:";
+"~d" = "deleteWordForward:";
+"~w" = "deleteWordBackward:";
+"\UF729" = "moveToBeginningOfDocument:"; /* Home */
+"\UF72B" = "moveToEndOfDocument:"; /* End */
+"@\UF729" = "moveToBeginningOfParagraph:"; /* Cmd-Home */
+"@\UF72B" = "moveToEndOfParagraph:"; /* Cmd-End */
+"@\UF700" = "moveToBeginningOfDocument:"; /* Command-Up arrow */
+"@\UF701" = "moveToEndOfDocument:"; /* Command-Down arrow */
+"^\UF700" = "pageUp:"; /* Control-Up arrow */
+"^\UF701" = "pageDown:"; /* Control-Down arrow */
+"\UF72C" = "pageUp:"; /* Page-up */
+"\UF72D" = "pageDown:"; /* Page-down */
+
+"^/" = "undo:";
+"~/" = "complete:"; /* escape */
+"^j" = "insertNewline:"; /* Ctrl-j in case TextExtras isn't around */
+
+/* Some useful commands that are not bound by default. */
+"~p" = "selectParagraph:";
+"~l" = "selectLine:";
+"~w" = "selectWord:";
+
+/* Mark-point stuff (Emacs-style mark and point bindings are implemented but not bound by default. In the text system the mark and point are ranges, not just locations. The "point" is the selected range.) */
+"^ " = "setMark:";
+"^m" = "setMark:";
+"^s" = ("swapWithMark:", "centerSelectionInVisibleArea:");
+"^w" = "deleteToMark:";
+"^x" = {
+"^x" = ("swapWithMark:", "centerSelectionInVisibleArea:");
+"^m" = "selectToMark:";
+};
+}
