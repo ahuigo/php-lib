@@ -2,6 +2,7 @@
 
 # shortcuts
 ~/Library/Keybindings/DefaultKeyBinding.dict
+http://stackoverflow.com/questions/20146972/is-there-a-way-to-make-alt-f-and-alt-b-jump-word-forward-and-backward-instead-of
 
 # install brew
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"

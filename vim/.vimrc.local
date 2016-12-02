@@ -111,8 +111,8 @@ endfunction
 com! -complete=file -nargs=* Move call Move(<f-args>)
 
 "clipboard
-"inoremap <D-V> <ESC>:exec 'r!pasteImg.py' expand('%:t:r')<CR>
-inoremap <D-V> <ESC>:r!pasteImg.py '%:t:r'<CR>
+"inoremap <D-V> <ESC>:r!pasteImg.py '%:t:r'<CR>
+inoremap <D-V> <ESC>:r!pasteImg.py '%'<CR>
 if ! has("gui_running")
 	" use keymap mapping `<D-V>` to `<ESC>AV` on terminal(iTerm2)
 	"imap AV <D-V>
