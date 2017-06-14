@@ -6,6 +6,7 @@ export CLICOLOR="xterm-color"
 export PATH=$PATH:$HOME/bin
 export GNUTERM=qt
 export PROMPT='${ret_status}>%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%}%{$reset_color%}'
+export JAVA_HOME="$(/usr/libexec/java_home -v 1.7)"
 
 ulimit -n 1000
 
@@ -25,6 +26,9 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 # go
 export GOPATH=~/go
 export PATH=$PATH:$GOPATH/bin
+
+# brew
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
 
 
 #git
