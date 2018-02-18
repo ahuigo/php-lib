@@ -10,6 +10,6 @@ $a = [
     'server'=>$_SERVER,
     'headers'=>getallheaders(),
 ];
-$count = $_COOKIE['count'] ?:0;
+$count = $_COOKIE['count'] ??0;
 setcookie('count', ++$count, time()+3600);
 var_dump($a);
