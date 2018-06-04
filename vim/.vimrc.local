@@ -63,7 +63,7 @@ if has("gui_running")
 	noremap <D-9> 9gt
 	noremap <D-0> :tablast<CR>
 else
-	" update & copy
+	" update & copy, <F13>是个变量
 	set <F13>=As
 	inoremap <F13> <C-o>:up<CR>
 	nnoremap <F13> :up<CR>
@@ -144,3 +144,4 @@ command! -nargs=+ -complete=command Pipe2Shell call Pipe2Shell(<q-args>)
 
 " exvim
 nnoremap <unique> <silent> <F3> :EXProjectToggle<cr>
+
