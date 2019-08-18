@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<title>临时粘贴板</title>
+		<style>
+			.gray{color:#9d9d9d;}
+			h1{text-align:center;}
+		</style>
+		<script src="/js/ajax.js"></script>
+		<script src="/js/url.js"></script>
+</head>
+<body>
+<div style="margin:0 auto;width:90%">
+	<form method="post" action="" onsubmit="return toSubmit();">
+		<h1>临时粘贴板</h1><br>
+		<b>IP:</b>
+		<span id="ip"></span><br/>
+		<b>原文：</b><a href="/clipboard.php?act=get&view&source">查看原文</a><br/>
+		<b>原文(html)：</b><a href="/clipboard.php?act=get&view">查看html</a><br/>
+		<b>User Agent：</b>
+		<span id="ua">Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36</span>
+		<br/>
+		<b>上传时间：</b>
+		<span id="setTime">2015-03-23 12:23:06</span><br>
+		<b>清除时间：</b>
+		<span id="expireTime">2015-03-23 14:23:06</span>
+		<br>
+		<input type="submit" name='submit'><br>
+		<textarea style="width:100%" rows="30" id="code" name="code"></textarea>
+		<br>
+		<input type="submit"><br>
+	</form><br>
+</div>
+<script>
+$ = function(id){return document.getElementById(id);}
+Array.prototype.inArray = function(needle) {
+	var length = this.length;
+	for(var i = 0; i < length; i++) {
+		if(this[i] == needle) return true;
+	}
+	return false;
+}
+Ajax.request('/clipboard.php?act=get', 'get', location.search.substr(1), function(json){
+			 var rtn = JSON.parse(json);
+			 for(var id in rtn){
+				 if(['setTime', 'expireTime'].inArray(id)){
+				 	rtn[id] = (new Date(rtn[id] * 1000).toString());
+				 }
+				 $(id).innerText = rtn[id];
+			 }
+			 $('ua').innerText = navigator.userAgent;
+});
+function updateTime(d){
+	$('setTime').innerText = d.toString();
+	d.setSeconds(d.getSeconds() + 86400);
+	$('expireTime').innerText = d.toString();
+
+}
+function toSubmit(){
+	try{
+	var oForm = document.forms[0];
+	var fd = new FormData(oForm);
+	Ajax.request('/clipboard.php?act=set', 'post', fd, function(ver){
+				var q ="?ver=" + ver;
+				history.pushState(null, "", q);
+				updateTime(new Date);
+			 });
+	}catch(e){}
+	return false;
+}
+
+</script>
+</body>
+</html>
